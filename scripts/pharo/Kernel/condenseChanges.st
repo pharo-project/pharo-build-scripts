@@ -1,0 +1,2 @@
+Smalltalk condenseChanges.
+Smalltalk saveImageInNewContext.
