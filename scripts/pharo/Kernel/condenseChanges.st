@@ -1,2 +1,1 @@
-Smalltalk condenseChanges.
-Smalltalk saveImageInNewContext.
+Smalltalk condenseChanges.Smalltalk saveImageInNewContext.
