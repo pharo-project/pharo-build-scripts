@@ -1,5 +1,5 @@
 "Load Hudson Build Tools"
 Gofer new
-	renggli: 'hudson';
+	squeaksource: 'CISupport';
 	package: 'HudsonBuildTools';
 	load.
