@@ -1,1 +1,1 @@
-Smalltalk shrinkToKernel.
+Smalltalk shrinkToKernel.
