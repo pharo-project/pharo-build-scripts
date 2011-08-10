@@ -4,4 +4,4 @@ Gofer new
 	package: 'ConfigurationOfNautilusWithoutPackages';
 	load.
 	
-(Smalltalk at: #ConfigurationOfNautilusWithoutPackages) loadDefault
+(Smalltalk at: #ConfigurationOfNautilusWithoutPackages) perform: #loadDefault
