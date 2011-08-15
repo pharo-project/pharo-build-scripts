@@ -1,5 +1,4 @@
 "Run Sista Tests"
-[ HDCoverageReport runPackages: #('SistaTests').
-  HDLintReport runPackages: #('Sista') ]
+[ HDCoverageReport runPackages: #('SistaTests')]
 	on: Deprecation
 	do: [ :err | err resume ]
