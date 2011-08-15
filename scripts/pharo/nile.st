@@ -4,4 +4,4 @@ Gofer new
        package: 'ConfigurationOfNile';
        load.
 
-((Smalltalk at: #ConfigurationOfNile) project version: '1.2') load: #(Core Tests Extras)
+((Smalltalk at: #ConfigurationOfNile) project version: '1.2') load: #(Core Tests)
