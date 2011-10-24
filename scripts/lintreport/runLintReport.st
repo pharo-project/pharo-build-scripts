@@ -1,4 +1,4 @@
 "LRXMLCheckstyleReport runAllPackagesAndAllRules."
 "LRXMLCompleteReport runAllPackagesAndAllRules."
 "LRXMLSimpleReport runAllPackagesAndAllRules."
-LRXMLSimpleReport generateXMLReport2.
+LRExamples generateXMLReport2.
