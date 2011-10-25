@@ -1,4 +1,2 @@
-"LRXMLCheckstyleReport runAllPackagesAndAllRules."
-"LRXMLCompleteReport runAllPackagesAndAllRules."
-"LRXMLSimpleReport runAllPackagesAndAllRules."
-LRExamples generateXMLReportJenkinsPlotGroupsExample.LRExamples generateXMLReportJenkinsPlotRulesExample.
+"LRExamples generateXMLReportJenkinsPlotGroupsExample.LRExamples generateXMLReportJenkinsPlotRulesExample."
+LRJenkinsReport new	generateXMLReportJenkinsPlotGroups;	generateXMLReportJenkinsPlotRules.
