@@ -6,3 +6,5 @@ Gofer new
 	
 (Smalltalk at: #ConfigurationOfContinousIntegration) perform: #loadDefault.
 
+"save the image first separately to prevent possible OSProcess errors"
+Smalltalk snapshot: true andQuit: false.
