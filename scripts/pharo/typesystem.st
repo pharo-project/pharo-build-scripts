@@ -15,8 +15,14 @@ Gofer new
 	package: 'OpalCompiler-Frontend';
 	package: 'OpalCompiler-Debugger';
 	package: 'OpalCompiler-Shout';
-	package: 'Compiler-Extensions';
 	load.
+	
+	
+Gofer new
+	squeaksource: 'OpalFrontend';
+	package: 'Compiler-Extensions';
+		load.
+
 	
 	
 
