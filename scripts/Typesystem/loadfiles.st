@@ -11,4 +11,4 @@
 ((FileDirectory on: '/builds/jenkins/workspace/Gradual Typing/scripts/Typesystem/Source/Extensions') matchingEntries: '*.st') do: [:each | each  readStream fileIn].
 		
 "go back to main dir"		
-"((FileDirectory on: '/builds/jenkins/workspace/Gradual Typing/scripts/Typesystem/Source') matchingEntries: '*.st') do: [:each | each  readStream fileIn]."
+((FileDirectory on: '/builds/jenkins/workspace/Gradual Typing/scripts/Typesystem/Source') matchingEntries: '*.st') do: [:each | each  readStream fileIn].

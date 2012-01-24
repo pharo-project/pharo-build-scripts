@@ -53,6 +53,9 @@ Gofer new
 	package: 'TypeSystem-Bootstrap';
 	load.
 
-(FileStream oldFileNamed: '/builds/jenkins/workspace/Gradual Typing/scripts/Typesystem/loadfiles.st') fileIn
+(FileStream oldFileNamed: '/builds/jenkins/workspace/Gradual Typing/scripts/Typesystem/loadfiles.st') fileIn.
+TypeConfiguration uniqueInstance bootstrap: false.
+(FileStream oldFileNamed: '/builds/jenkins/workspace/Gradual Typing/scripts/Typesystem/loadfiles.st') fileIn.
+
 
 
