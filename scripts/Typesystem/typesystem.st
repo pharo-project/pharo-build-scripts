@@ -53,4 +53,6 @@ Gofer new
 	package: 'TypeSystem-Bootstrap';
 	load.
 
+(FileStream oldFileNamed: 'loadfiles.st') fileIn
+
 
