@@ -11,4 +11,9 @@
 ((FileDirectory on: '/builds/jenkins/workspace/Gradual Typing/scripts/Typesystem/Source/Extensions') matchingEntries: '*.st') do: [:each | each  readStream fileIn].
 		
 "go back to main dir"		
-((FileDirectory on: '/builds/jenkins/workspace/Gradual Typing/scripts/Typesystem/Source') matchingEntries: '*.st') do: [:each | each  readStream fileIn].
+(FileStream oldFileNamed: '/builds/jenkins/workspace/Gradual Typing/scripts/Typesystem/Source/TypeSystem-Analyzer.st') fileIn.
+(FileStream oldFileNamed: '/builds/jenkins/workspace/Gradual Typing/scripts/Typesystem/Source/TypeSystem-Compiler.st') fileIn.
+(FileStream oldFileNamed: '/builds/jenkins/workspace/Gradual Typing/scripts/Typesystem/Source/TypeSystem-Parser.st') fileIn.
+(FileStream oldFileNamed: '/builds/jenkins/workspace/Gradual Typing/scripts/Typesystem/Source/TypeSystem-Types-Support.st') fileIn.
+(FileStream oldFileNamed: '/builds/jenkins/workspace/Gradual Typing/scripts/Typesystem/Source/TypeSystem-TempSupport.st') fileIn.
+
