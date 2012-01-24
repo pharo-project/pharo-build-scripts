@@ -48,7 +48,9 @@ Gofer new
 	package: 'Compiler-Extensions';
 	load.
 
-	
-	
+Gofer new
+	squeaksource: 'GradualTypeSystem';
+	package: 'TypeSystem-Bootstrap';
+	load.
 
 
