@@ -53,6 +53,6 @@ Gofer new
 	package: 'TypeSystem-Bootstrap';
 	load.
 
-(FileStream oldFileNamed: 'loadfiles.st') fileIn
+(FileStream oldFileNamed: '/builds/jenkins/workspace/Gradual Typing/scripts/Typesystem/loadfiles.st') fileIn
 
 

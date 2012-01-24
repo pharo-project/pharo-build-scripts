@@ -1,1 +1,0 @@
-'From Pharo1.4a of ''16 June 2011'' [Latest update: #14244] on 12 December 2011 at 3:00:37 pm'!!Object methodsFor: '*typesystem-core' stamp: 'EstebanAllende 12/5/2011 12:52'!isType	^false! !
