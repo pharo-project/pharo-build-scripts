@@ -49,9 +49,9 @@ puts blue("Updating local git resources")
 if File.exist? DIR+'/../.git'
     SCRIPTS = DIR+'/../'
 else 
-   SCRIPTS = 'pharo-build/'
-    system("test -e pharo-build || git clone --depth=1 git@github.com:pharo-project/pharo-build-scripts.git")
-    system("git --git-dir=pharo-build/.git pull")
+   SCRIPTS = 'pharo-build-scripts/'
+    system("test -e pharo-build-scripts || git clone --depth=1 git@github.com:pharo-project/pharo-build-scripts.git")
+    system("git --git-dir=pharo-build-scripts/.git pull")
 end
  
 puts REPOS="git@github.com:pharo-project/pharo-core.git"
