@@ -1,6 +1,6 @@
 | version versionString |
 Gofer new
-	smalltalkhubUser: 'dh83' project: 'FileSystemST';
+	smalltalkhubUser: 'PharoExtras' project: 'FileSystemST';
 	package: 'ConfigurationOfFileSystemST';
 	load.
 
