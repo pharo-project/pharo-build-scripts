@@ -11,7 +11,7 @@ BUILD_PATH="${WORKSPACE:=$BASE_PATH/builds}"
 IMAGES_PATH="$BASE_PATH/images"
 ICONS_PATH="$BASE_PATH/platform/icons"
 VM_PATH="$BUILD_PATH/vm"
-SOURCES_NAME="PharoV40.sources"
+SOURCES_NAME="PharoV30.sources"
 
 # help function
 function display_help() {
