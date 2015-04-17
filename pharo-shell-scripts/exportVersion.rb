@@ -38,9 +38,10 @@ DIR = File.dirname(dir)
 
 # ============================================================================
 
-PHARO_VERSION = ARGV[0].to_i()
+PHARO_MAJOR_VERSION = ARGV[0]
+PHARO_BUILD_VERSION = ARGV[1].to_i()
 
-puts blue("Exporting Pharo Version #{PHARO_VERSION}")
+puts blue("Exporting Pharo Version #{PHARO_BUILD_VERSION}")
 
 # ============================================================================
 puts blue("Updating local git resources")
@@ -55,14 +56,14 @@ else
 end
  
 puts REPOS="git@github.com:pharo-project/pharo-core.git"
-system("test -e pharo-core || git clone --depth=1 -b 2.0 --no-checkout #{REPOS}")
+system("test -e pharo-core || git clone --depth=1 -b #{PHARO_MAJOR_VERSION} --no-checkout #{REPOS}")
 system("git --git-dir=pharo-core/.git pull")
 system("rm -rf pharo-core/*")
 guard()
 
 
 puts REPOS="git://github.com/dalehenrich/filetree.git"
-system("test -e filetree || git clone --depth=1 -b pharo2.0 --no-checkout #{REPOS}")
+system("test -e filetree || git clone --depth=1 -b pharo#{PHARO_MAJOR_VERSION} --no-checkout #{REPOS}")
 system("git --git-dir=filetree/.git pull")
 guard()
 
@@ -75,11 +76,11 @@ if !ENV.has_key? 'PHARO_VM'
 end
 
 # loading the proper image ====================================================
-puts blue("Loading image version #{PHARO_VERSION}")
-system("#{SCRIPTS}/pharo-shell-scripts/fetchPharoVersion.rb #{PHARO_VERSION}")
+puts blue("Loading image version #{PHARO_BUILD_VERSION}")
+system("#{SCRIPTS}/pharo-shell-scripts/fetchPharoVersion.rb #{PHARO_BUILD_VERSION}")
 guard()
 
 # exporting the pharo sources =================================================
 puts blue("Updating the image and exporting all sources ")
 
-exec("$PHARO_VM Pharo-#{PHARO_VERSION}.image #{SCRIPTS}/scripts/pharo/pharo-2.0-git-tracker.st")
+exec("$PHARO_VM Pharo-#{PHARO_BUILD_VERSION}.image #{SCRIPTS}/scripts/pharo/pharo-#{PHARO_MAJOR_VERSION}-git-tracker.st")
