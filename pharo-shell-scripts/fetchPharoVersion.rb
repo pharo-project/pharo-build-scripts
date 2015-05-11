@@ -112,7 +112,7 @@ SOURCES="https://gforge.inria.fr/frs/download.php/24391/PharoV10.sources.zip"
 # exporting the pharo sources =================================================
 puts blue("Updating the image Pharo-#{PHARO_VERSION}.image")
 
-system("$PHARO_VM -headless $PWD/Pharo-#{PHARO_VERSION}.image $PWD/updateTo#{PHARO_VERSION}.st")
+system("$PHARO_VM --headless $PWD/Pharo-#{PHARO_VERSION}.image $PWD/updateTo#{PHARO_VERSION}.st")
 `rm $PWD/updateTo#{PHARO_VERSION}.st`
 
 # check the version ==========================================================
@@ -125,7 +125,7 @@ Smalltalk exit: 0.
 IDENTIFIER
 }
 
-LOADED_VERSION = `$PHARO_VM -headless $PWD/Pharo-#{PHARO_VERSION}.image $PWD/versionCheck#{PHARO_VERSION}.st`
+LOADED_VERSION = `$PHARO_VM --headless $PWD/Pharo-#{PHARO_VERSION}.image $PWD/versionCheck#{PHARO_VERSION}.st`
 `rm versionCheck#{PHARO_VERSION}.st`
 
 if LOADED_VERSION.to_i != PHARO_VERSION.to_i
