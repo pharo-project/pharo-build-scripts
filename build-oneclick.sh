@@ -17,13 +17,12 @@ VM_PATH="$BUILD_PATH/vm"
 
 # help function
 function display_help() {
-	echo "$(basename $0) -i input -o output [-n name] [-t title] [-v version] [-s version] [-c icon] [-w timestamp]"
+	echo "$(basename $0) -i input -o output [-n name] [-t title] [-v version] [-c icon] [-w timestamp]"
 	echo " -i 		input product name, image from images-directory, or successful jenkins build"
 	echo " -o 		output product name (e.g. pharo1.0)"
 	echo " -n 		the name of the executable (e.g. pharo)"
 	echo " -t 		the title of the application (e.g. Pharo)"
 	echo " -v 		the version of the application (e.g. 1.0)"
-	echo " -s 		the sources to use (default is version)"
 	echo " -c 		the icon of the application (e.g. Pharo)"
 	echo " -w 		a timestamp string (e.g. `date +'%B %d, %Y'`)"
 }
@@ -74,7 +73,6 @@ while getopts ":i:o:n:t:v:s:c:w:?" OPT ; do
 		n) OPTION_NAME="$OPTARG" ;;
 		t) OPTION_TITLE="$OPTARG" ;;
 		v) OPTION_VERSION="$OPTARG" ;;
-		s) OPTION_SOURCE_VERSION="$OPTARG" ;;
 		c) OPTION_ICON="$OPTARG" ;;
 		w) OPTION_WHEN="$OPTARG" ;;
 
