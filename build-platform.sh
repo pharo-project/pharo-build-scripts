@@ -27,7 +27,7 @@ function display_help() {
 }
 
 # parse options
-while getopts ":i:o:n:t:v:c:w:p:?" OPT ; do
+while getopts ":i:o:n:t:v:s:c:w:p:?" OPT ; do
 	case "$OPT" in
 
 		# input
