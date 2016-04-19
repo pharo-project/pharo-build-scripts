@@ -17,18 +17,19 @@ VM_PATH="$BUILD_PATH/vm"
 
 # help function
 function display_help() {
-	echo "$(basename $0) -i input -o output [-n name] [-t title] [-v version] [-c icon] [-w timestamp]"
-	echo " -i input product name, image from images-directory, or successful jenkins build"
-	echo " -o output product name (e.g. pharo1.0)"
-	echo " -n the name of the executable (e.g. pharo)"
-	echo " -t the title of the application (e.g. Pharo)"
-	echo " -v the version of the application (e.g. 1.0)"
-	echo " -c the icon of the application (e.g. Pharo)"
-	echo " -w a timestamp string (e.g. `date +'%B %d, %Y'`)"
+	echo "$(basename $0) -i input -o output [-n name] [-t title] [-v version] [-s version] [-c icon] [-w timestamp]"
+	echo " -i 		input product name, image from images-directory, or successful jenkins build"
+	echo " -o 		output product name (e.g. pharo1.0)"
+	echo " -n 		the name of the executable (e.g. pharo)"
+	echo " -t 		the title of the application (e.g. Pharo)"
+	echo " -v 		the version of the application (e.g. 1.0)"
+	echo " -s 		the sources to use (default is version)"
+	echo " -c 		the icon of the application (e.g. Pharo)"
+	echo " -w 		a timestamp string (e.g. `date +'%B %d, %Y'`)"
 }
 
 # parse options
-while getopts ":i:o:n:t:v:c:w:?" OPT ; do
+while getopts ":i:o:n:t:v:s:c:w:?" OPT ; do
 	case "$OPT" in
 
 		# input
@@ -64,7 +65,6 @@ while getopts ":i:o:n:t:v:c:w:?" OPT ; do
 				echo "$(basename $0): input directory not found ($INPUT_PATH)"
 				exit 1
 			fi
-
 		;;
 
 		# output
@@ -74,6 +74,7 @@ while getopts ":i:o:n:t:v:c:w:?" OPT ; do
 		n) OPTION_NAME="$OPTARG" ;;
 		t) OPTION_TITLE="$OPTARG" ;;
 		v) OPTION_VERSION="$OPTARG" ;;
+		s) OPTION_SOURCE_VERSION="$OPTARG" ;;
 		c) OPTION_ICON="$OPTARG" ;;
 		w) OPTION_WHEN="$OPTARG" ;;
 
@@ -122,6 +123,7 @@ if [ ! -e "$BUILD_PATH" ] ; then
 	mkdir "$BUILD_PATH"
 fi
 
+PATH_VERSION=`echo "$OPTION_VERSION" | sed 's/\.//'`
 OUTPUT_PATH="$BUILD_PATH/$OPTION_NAME.app"
 OUTPUT_ARCH="$BUILD_PATH/$OUTPUT_NAME.zip"
 
@@ -171,8 +173,8 @@ ls -1 "$INPUT_PATH" | while read FILE ; do
 done
 
 # copy over Linux VM files
-wget http://files.pharo.org/vm/pharo/linux/Pharo-VM-linux-stable.zip
-LINUX_VM_PATH="Pharo-VM-linux-stable.zip"
+LINUX_VM_PATH="pharo-linux-stable.zip"
+wget http://files.pharo.org/get-files/$PATH_VERSION/$LINUX_VM_PATH
 if [ -f "$LINUX_VM_PATH" ] ; then
     unzip -q "$LINUX_VM_PATH" -d "$OUTPUT_PATH/tmp"
     mv "$OUTPUT_PATH/tmp/" "$OUTPUT_PATH/Contents/Linux/"
@@ -181,8 +183,8 @@ else
 fi
 
 # copy over Mac OS VM files
-wget http://files.pharo.org/vm/pharo/mac/Pharo-VM-mac-stable.zip
-MAC_VM_PATH="Pharo-VM-mac-stable.zip"
+MAC_VM_PATH="pharo-mac-stable.zip"
+wget http://files.pharo.org/get-files/$PATH_VERSION/$MAC_VM_PATH
 if [ -f "$MAC_VM_PATH" ] ; then
     unzip -q "$MAC_VM_PATH" -d "$OUTPUT_PATH/tmp"
     
@@ -197,8 +199,8 @@ else
 fi
 
 # copy over Windows VM files
-wget http://files.pharo.org/vm/pharo/win/Pharo-VM-win-stable.zip
-WIN_VM_PATH="Pharo-VM-win-stable.zip"
+MAC_VM_PATH="pharo-win-stable.zip"
+wget http://files.pharo.org/get-files/$PATH_VERSION/$WIN_VM_PATH
 if [ -f "$WIN_VM_PATH" ] ; then
     unzip -q "$WIN_VM_PATH" -d "$OUTPUT_PATH"
 else
