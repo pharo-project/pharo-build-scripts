@@ -63,12 +63,6 @@ while getopts ":i:o:n:t:v:s:c:w:p:?" OPT ; do
 				echo "$(basename $0): input directory not found ($INPUT_PATH)"
 				exit 1
 			fi
-			
-			INPUT_SOURCES="$INPUT_PATH/$SOURCES_NAME"
-			if [ ! -f "$INPUT_SOURCES" ] ; then
-				echo "$(basename $0): sources file not found ($INPUT_SOURCES)"
-				exit 1
-			fi
 		;;
 
 		# output
@@ -138,6 +132,11 @@ fi
 PATH_VERSION=`echo "$OPTION_VERSION" | sed 's/\.//'`
 SOURCES_PATH_VERSION=`echo "$OPTION_SOURCE_VERSION" | sed 's/\.//'`
 SOURCES_NAME="PharoV$SOURCES_PATH_VERSION.sources"
+INPUT_SOURCES="$INPUT_PATH/$SOURCES_NAME"
+if [ ! -f "$INPUT_SOURCES" ] ; then
+	echo "$(basename $0): sources file not found ($INPUT_SOURCES)"
+	exit 1
+fi
 
 # prepare output
 if [ ! -e "$BUILD_PATH" ] ; then
