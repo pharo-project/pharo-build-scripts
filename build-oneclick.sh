@@ -28,7 +28,7 @@ function display_help() {
 }
 
 # parse options
-while getopts ":i:o:n:t:v:s:c:w:?" OPT ; do
+while getopts ":i:o:n:t:v:c:w:?" OPT ; do
 	case "$OPT" in
 
 		# input
@@ -197,7 +197,7 @@ else
 fi
 
 # copy over Windows VM files
-MAC_VM_PATH="pharo-win-stable.zip"
+WIN_VM_PATH="pharo-win-stable.zip"
 wget http://files.pharo.org/get-files/$PATH_VERSION/$WIN_VM_PATH
 if [ -f "$WIN_VM_PATH" ] ; then
     unzip -q "$WIN_VM_PATH" -d "$OUTPUT_PATH"

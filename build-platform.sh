@@ -20,8 +20,8 @@ function display_help() {
 	echo " -n 		the name of the executable (e.g. pharo)"
 	echo " -t 		the title of the application (e.g. Pharo)"
 	echo " -v 		the version of the application (e.g. 1.0)"
-	echo " -c 		the icon of the application (e.g. Pharo)"
 	echo " -s 		the sources to use (default is version)"
+	echo " -c 		the icon of the application (e.g. Pharo)"
 	echo " -w 		a timestamp string (e.g. `date +'%B %d, %Y'`)"
 	echo " -p 		build a file for platform mac, win or linux (e.g. mac)"
 }
