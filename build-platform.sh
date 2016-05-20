@@ -14,12 +14,13 @@ VM_PATH="$BUILD_PATH/vm"
 
 # help function
 function display_help() {
-	echo "$(basename $0) -i input -o output [-n name] [-t title] [-v version] [-s version] [-c icon] [-w timestamp] -p mac|win|linux"
+	echo "$(basename $0) -i input -o output [-n name] [-t title] [-v appversion] [-r pharoversion] [-s sourcesversion] [-c icon] [-w timestamp] -p mac|win|linux"
 	echo " -i 		input product name, image from images-directory, or successful jenkins build"
 	echo " -o 		output product name (e.g. pharo1.0)"
 	echo " -n 		the name of the executable (e.g. pharo)"
 	echo " -t 		the title of the application (e.g. Pharo)"
 	echo " -v 		the version of the application (e.g. 1.0)"
+	echo " -r 		the version of Pharo to use (e.g. 5.0)"
 	echo " -s 		the sources to use (default is version)"
 	echo " -c 		the icon of the application (e.g. Pharo)"
 	echo " -w 		a timestamp string (e.g. `date +'%B %d, %Y'`)"
@@ -72,6 +73,7 @@ while getopts ":i:o:n:t:v:s:c:w:p:?" OPT ; do
 		n) OPTION_NAME="$OPTARG" ;;
 		t) OPTION_TITLE="$OPTARG" ;;
 		v) OPTION_VERSION="$OPTARG" ;;
+		r) OPTION_PHARO_VERSION="$OPTARG" ;;
 		s) OPTION_SOURCE_VERSION="$OPTARG" ;;
 		c) OPTION_ICON="$OPTARG" ;;
 		w) OPTION_WHEN="$OPTARG" ;;
@@ -117,6 +119,10 @@ if [ -z "$OPTION_VERSION" ] ; then
 	OPTION_VERSION="1.0"
 fi
 
+if [ -z "$OPTION_PHARO_VERSION" ] ; then
+	OPTION_PHARO_VERSION="$OPTION_VERSION"
+fi
+
 if [ -z "$OPTION_SOURCE_VERSION" ] ; then
 	OPTION_SOURCE_VERSION="$OPTION_VERSION"
 fi
@@ -129,9 +135,9 @@ if [ -z "$OPTION_WHEN" ] ; then
 	OPTION_WHEN=`date +"%B %d, %Y"`
 fi
 
-PATH_VERSION=`echo "$OPTION_VERSION" | sed 's/\.//'`
-SOURCES_PATH_VERSION=`echo "$OPTION_SOURCE_VERSION" | sed 's/\.//'`
-SOURCES_NAME="PharoV$SOURCES_PATH_VERSION.sources"
+PHARO_VERSION_PATH=`echo "$OPTION_PHARO_VERSION" | sed 's/\.//'`
+PHARO_SOURCES_VERSION_PATH=`echo "$OPTION_SOURCE_VERSION" | sed 's/\.//'`
+SOURCES_NAME="PharoV$PHARO_SOURCES_VERSION_PATH.sources"
 INPUT_SOURCES="$INPUT_PATH/$SOURCES_NAME"
 if [ ! -f "$INPUT_SOURCES" ] ; then
 	echo "$(basename $0): sources file not found ($INPUT_SOURCES)"
@@ -220,7 +226,7 @@ done
 # copy over Linux VM files
 if [ "$OPTION_PLATFORM" = "linux" ]; then
 	LINUX_VM_PATH="pharo-linux-stable.zip"
-	test -f $LINUX_VM_PATH || wget http://files.pharo.org/get-files/$PATH_VERSION/$LINUX_VM_PATH
+	test -f $LINUX_VM_PATH || wget http://files.pharo.org/get-files/$PHARO_VERSION_PATH/$LINUX_VM_PATH
  
 	if [ -f "$LINUX_VM_PATH" ] ; then
 	    unzip -q "$LINUX_VM_PATH" -d "$OUTPUT_PATH/tmp"
@@ -233,7 +239,7 @@ fi
 # copy over Mac OS VM files
 if [ "$OPTION_PLATFORM" = "mac" ]; then
 	MAC_VM_PATH="pharo-mac-stable.zip"
-	test -f $MAC_VM_PATH || wget http://files.pharo.org/get-files/$PATH_VERSION/$MAC_VM_PATH
+	test -f $MAC_VM_PATH || wget http://files.pharo.org/get-files/$PHARO_VERSION_PATH/$MAC_VM_PATH
 
 	if [ -f "$MAC_VM_PATH" ] ; then
 	    unzip -q "$MAC_VM_PATH" -d "$OUTPUT_PATH/tmp"
@@ -252,7 +258,7 @@ fi
 # copy over Windows VM files
 if [ "$OPTION_PLATFORM" = "win" ]; then
 	WIN_VM_PATH="pharo-win-stable.zip"
-	test -f $WIN_VM_PATH || wget http://files.pharo.org/get-files/$PATH_VERSION/$WIN_VM_PATH
+	test -f $WIN_VM_PATH || wget http://files.pharo.org/get-files/$PHARO_VERSION_PATH/$WIN_VM_PATH
 
 	if [ -f "$WIN_VM_PATH" ] ; then
 	    unzip -q "$WIN_VM_PATH" -d "$OUTPUT_PATH"
