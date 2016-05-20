@@ -1,8 +1,8 @@
 #!/bin/sh
 
-VERSION=${VERSION:-"3.0.0"}
+VERSION=${VERSION:-"5.0.0"}
 
-cd pharo-ci/windows-installer
+cd pharo-build-scripts/windows-installer
 mkdir Pharo-win
 mv ../../Pharo Pharo-win/
 NSIS/Bin/makensis.exe pharo-installer-builder.nsi
