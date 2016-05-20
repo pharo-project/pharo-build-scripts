@@ -220,7 +220,7 @@ done
 # copy over Linux VM files
 if [ "$OPTION_PLATFORM" = "linux" ]; then
 	LINUX_VM_PATH="pharo-linux-stable.zip"
-	wget http://files.pharo.org/get-files/$PATH_VERSION/$LINUX_VM_PATH
+	test -f $LINUX_VM_PATH || wget http://files.pharo.org/get-files/$PATH_VERSION/$LINUX_VM_PATH
  
 	if [ -f "$LINUX_VM_PATH" ] ; then
 	    unzip -q "$LINUX_VM_PATH" -d "$OUTPUT_PATH/tmp"
@@ -233,7 +233,7 @@ fi
 # copy over Mac OS VM files
 if [ "$OPTION_PLATFORM" = "mac" ]; then
 	MAC_VM_PATH="pharo-mac-stable.zip"
-	wget http://files.pharo.org/get-files/$PATH_VERSION/$MAC_VM_PATH
+	test -f $MAC_VM_PATH || wget http://files.pharo.org/get-files/$PATH_VERSION/$MAC_VM_PATH
 
 	if [ -f "$MAC_VM_PATH" ] ; then
 	    unzip -q "$MAC_VM_PATH" -d "$OUTPUT_PATH/tmp"
@@ -252,7 +252,7 @@ fi
 # copy over Windows VM files
 if [ "$OPTION_PLATFORM" = "win" ]; then
 	WIN_VM_PATH="pharo-win-stable.zip"
-	wget http://files.pharo.org/get-files/$PATH_VERSION/$WIN_VM_PATH
+	test -f $WIN_VM_PATH || wget http://files.pharo.org/get-files/$PATH_VERSION/$WIN_VM_PATH
 
 	if [ -f "$WIN_VM_PATH" ] ; then
 	    unzip -q "$WIN_VM_PATH" -d "$OUTPUT_PATH"
