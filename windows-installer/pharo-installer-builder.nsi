@@ -54,8 +54,10 @@ section "install"
 	file Pharo-win\Pharo\libcairo-2.dll
 	file Pharo-win\Pharo\libeay32.dll
 	file Pharo-win\Pharo\libfreetype-6.dll
+	file Pharo-win\Pharo\libgit2.dll
 	file Pharo-win\Pharo\libpixman-1-0.dll
 	file Pharo-win\Pharo\libpng-3.dll
+	file Pharo-win\Pharo\libssh2-1.dll
 	file Pharo-win\Pharo\Pharo.changes
 	file Pharo-win\Pharo\Pharo.exe
 	file pharo.ico
@@ -67,8 +69,10 @@ section "install"
 	file Pharo-win\Pharo\PharoV40.sources
 	file Pharo-win\Pharo\PharoV50.sources
 	file Pharo-win\Pharo\README.txt
+	file Pharo-win\Pharo\SDL2.dll
 	file Pharo-win\Pharo\SqueakFFIPrims.dll
 	file Pharo-win\Pharo\SqueakSSL.dll
+	file Pharo-win\Pharo\SurfacePlugin.dll	
 	file Pharo-win\Pharo\ssleay32.dll
 	file Pharo-win\Pharo\zlib1.dll
  
@@ -122,8 +126,10 @@ section "uninstall"
 	delete $INSTDIR\libcairo-2.dll
 	delete $INSTDIR\libeay32.dll
 	delete $INSTDIR\libfreetype-6.dll
+	delete $INSTDIR\libgit2.dll
 	delete $INSTDIR\libpixman-1-0.dll
 	delete $INSTDIR\libpng-3.dll
+	delete $INSTDIR\libssh2-1.dll
 	delete $INSTDIR\Pharo.changes
 	delete $INSTDIR\Pharo.exe
 	delete $INSTDIR\pharo.ico
@@ -135,8 +141,10 @@ section "uninstall"
 	delete $INSTDIR\PharoV40.sources
 	delete $INSTDIR\PharoV50.sources
 	delete $INSTDIR\README.txt
+	delete $INSTDIR\SDL2.dll
 	delete $INSTDIR\SqueakFFIPrims.dll
 	delete $INSTDIR\SqueakSSL.dll
+	delete $INSTDIR\SurfacePlugin.dll
 	delete $INSTDIR\ssleay32.dll
 	delete $INSTDIR\zlib1.dll
  
