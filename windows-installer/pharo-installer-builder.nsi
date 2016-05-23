@@ -70,7 +70,6 @@ section "install"
 	file Pharo-win\Pharo\PharoV50.sources
 	file Pharo-win\Pharo\README.txt
 	file Pharo-win\Pharo\SDL2.dll
-	file Pharo-win\Pharo\SqueakFFIPrims.dll
 	file Pharo-win\Pharo\SqueakSSL.dll
 	file Pharo-win\Pharo\SurfacePlugin.dll	
 	file Pharo-win\Pharo\ssleay32.dll
@@ -142,7 +141,6 @@ section "uninstall"
 	delete $INSTDIR\PharoV50.sources
 	delete $INSTDIR\README.txt
 	delete $INSTDIR\SDL2.dll
-	delete $INSTDIR\SqueakFFIPrims.dll
 	delete $INSTDIR\SqueakSSL.dll
 	delete $INSTDIR\SurfacePlugin.dll
 	delete $INSTDIR\ssleay32.dll
