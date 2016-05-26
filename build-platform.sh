@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/bin/bash -x
 #
 # build-platform.sh -- Builds Pharo based platform-dependent images
 #
@@ -14,7 +14,7 @@ VM_PATH="$BUILD_PATH/vm"
 
 # help function
 function display_help() {
-	echo "$(basename $0) -i input -o output [-n name] [-t title] [-v appversion] [-r pharoversion] [-s sourcesversion] [-c icon] [-w timestamp] -p mac|win|linux"
+	echo "$(basename $0) -i input -o output [-n name] [-t title] [-v appversion] [-r pharoversion] [-s sourcesversion] [-l] [-c icon] [-w timestamp] -p mac|win|linux"
 	echo " -i 		input product name, image from images-directory, or successful jenkins build"
 	echo " -o 		output product name (e.g. pharo1.0)"
 	echo " -n 		the name of the executable (e.g. pharo)"
@@ -22,13 +22,40 @@ function display_help() {
 	echo " -v 		the version of the application (e.g. 1.0)"
 	echo " -r 		the version of Pharo to use (e.g. 5.0)"
 	echo " -s 		the sources to use (default is version)"
+	echo " -l 		tell the script to build the pharo launcher. It will embed pre-supr VM and the current stable Pharo image."
 	echo " -c 		the icon of the application (e.g. Pharo)"
 	echo " -w 		a timestamp string (e.g. `date +'%B %d, %Y'`)"
 	echo " -p 		build a file for platform mac, win or linux (e.g. mac)"
 }
 
+function copy_prespur_vm() {
+	if [ "$OPTION_LANCHER" = true ] ; then
+		VM_PRESPUR=$1
+		VM_PRESPUR_PATH=$VM_PATH/$VM_PRESPUR
+		test -f $VM_PRESPUR_PATH || wget -P $VM_PATH http://files.pharo.org/get-files/40/$VM_PRESPUR
+
+		if [ -f "$VM_PRESPUR_PATH" ] ; then
+			mkdir -p $VM_PATH/40
+		    unzip -q "$VM_PRESPUR_PATH" -d "$VM_PATH/40"
+		    rm "$VM_PRESPUR_PATH"
+		else
+		    echo "Warning: Cannot find pre-spur VM!"
+		fi
+		mv "$VM_PATH" "$OUTPUT_PATH/$RESOURCES_PATH"
+	fi
+}
+
+function copy_current_stable_image() {
+	if [ "$OPTION_LANCHER" = true ] ; then
+		IMAGES_PATH="$OUTPUT_PATH/$RESOURCES_PATH/images"
+		mkdir "$IMAGES_PATH"
+		wget -P $IMAGES_PATH http://files.pharo.org/image/stable/latest.zip
+	    mv "$IMAGES_PATH/latest.zip" "$IMAGES_PATH/pharo-stable.zip"
+	fi	
+}
+
 # parse options
-while getopts ":i:o:n:t:v:r:s:c:w:p:?" OPT ; do
+while getopts ":i:o:n:t:v:r:s:lc:w:p:?" OPT ; do
 	case "$OPT" in
 
 		# input
@@ -75,6 +102,7 @@ while getopts ":i:o:n:t:v:r:s:c:w:p:?" OPT ; do
 		v) OPTION_VERSION="$OPTARG" ;;
 		r) OPTION_PHARO_VERSION="$OPTARG" ;;
 		s) OPTION_SOURCE_VERSION="$OPTARG" ;;
+		l) OPTION_LANCHER=true;;
 		c) OPTION_ICON="$OPTARG" ;;
 		w) OPTION_WHEN="$OPTARG" ;;
 		
@@ -227,13 +255,14 @@ done
 if [ "$OPTION_PLATFORM" = "linux" ]; then
 	LINUX_VM_PATH="pharo-linux-stable.zip"
 	test -f $LINUX_VM_PATH || wget http://files.pharo.org/get-files/$PHARO_VERSION_PATH/$LINUX_VM_PATH
- 
+  
 	if [ -f "$LINUX_VM_PATH" ] ; then
 	    unzip -q "$LINUX_VM_PATH" -d "$OUTPUT_PATH/tmp"
 	    mv "$OUTPUT_PATH/tmp/" "$OUTPUT_PATH/$BIN_PATH"
 	else
 	    echo "Warning: Cannot find Linux VM!"
 	fi
+	copy_prespur_vm $LINUX_VM_PATH
 fi
 
 # copy over Mac OS VM files
@@ -253,6 +282,7 @@ if [ "$OPTION_PLATFORM" = "mac" ]; then
 	else
 	    echo "Warning: Cannot find Mac OS VM!"
 	fi
+	copy_prespur_vm $MAC_VM_PATH
 fi
 
 # copy over Windows VM files
@@ -265,12 +295,14 @@ if [ "$OPTION_PLATFORM" = "win" ]; then
 	else
 	    echo "Warning: Cannot find Windows VM!"
 	fi
+	copy_prespur_vm $WIN_VM_PATH
 fi
 
 # copy over specific files
 cp "$INPUT_IMAGE" "$OUTPUT_PATH/$RESOURCES_PATH/$OPTION_NAME.image"
 cp "$INPUT_CHANGES" "$OUTPUT_PATH/$RESOURCES_PATH/$OPTION_NAME.changes"
 cp "$INPUT_SOURCES" "$OUTPUT_PATH/$RESOURCES_PATH"
+copy_current_stable_image
 if [ ! -z "$PLATFORM_ICONS_PATH" ]; then
 	if [ ! -d "$OUTPUT_PATH/$PLATFORM_ICONS_PATH" ]; then
 		mkdir $OUTPUT_PATH/$PLATFORM_ICONS_PATH
