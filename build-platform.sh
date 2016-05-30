@@ -210,6 +210,10 @@ if [ -f "$OUTPUT_ARCH" ] ; then
 	rm -rf "$OUTPUT_ARCH"
 fi
 
+if [ -f "$OUTPUT_PATH" ] ; then
+	rm -f "$OUTPUT_PATH"
+fi
+
 if [ -d "$OUTPUT_PATH" ] ; then
 	rm -rf "$OUTPUT_PATH"
 fi
