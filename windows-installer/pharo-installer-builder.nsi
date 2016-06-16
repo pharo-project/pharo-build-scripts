@@ -52,7 +52,6 @@ section "install"
 	# Files added here should be removed by the uninstaller (see section "uninstall")
 	file pharo.ico
 	file Pharo-win\Pharo\FT2Plugin.dll
-	file Pharo-win\Pharo\images
 	file Pharo-win\Pharo\images\pharo-stable.zip
 	file Pharo-win\Pharo\libcairo-2.dll
 	file Pharo-win\Pharo\libeay32.dll
@@ -71,8 +70,6 @@ section "install"
 	file Pharo-win\Pharo\SqueakSSL.dll
 	file Pharo-win\Pharo\ssleay32.dll
 	file Pharo-win\Pharo\SurfacePlugin.dll
-	file Pharo-win\Pharo\vm
-	file Pharo-win\Pharo\vm\40
 	file Pharo-win\Pharo\vm\40\FT2Plugin.dll
 	file Pharo-win\Pharo\vm\40\libcairo-2.dll
 	file Pharo-win\Pharo\vm\40\libeay32.dll
@@ -141,7 +138,6 @@ section "uninstall"
 
 	delete $INSTDIR\pharo.ico
 	delete $INSTDIR\FT2Plugin.dll
-	delete $INSTDIR\images
 	delete $INSTDIR\images\pharo-stable.zip
 	delete $INSTDIR\libcairo-2.dll
 	delete $INSTDIR\libeay32.dll
@@ -160,8 +156,6 @@ section "uninstall"
 	delete $INSTDIR\SqueakSSL.dll
 	delete $INSTDIR\ssleay32.dll
 	delete $INSTDIR\SurfacePlugin.dll
-	delete $INSTDIR\vm
-	delete $INSTDIR\vm\40
 	delete $INSTDIR\vm\40\FT2Plugin.dll
 	delete $INSTDIR\vm\40\libcairo-2.dll
 	delete $INSTDIR\vm\40\libeay32.dll
