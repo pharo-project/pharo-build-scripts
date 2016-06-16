@@ -6,7 +6,7 @@
 
 # These will be displayed by the "Click here for support information" link in "Add/Remove Programs"
 # It is possible to use "mailto:" links in here to open the email client
-!define HELPURL "mailto://damien.cassou@gmail.com" # "Support Information" link
+!define HELPURL "mailto://pharo-users@lists.pharo.org" # "Support Information" link
 !define UPDATEURL "http://pharo.org" # "Product Updates" link
 !define ABOUTURL "http://pharo.org" # "Publisher" link
 
@@ -50,7 +50,10 @@ section "install"
 	# Files for the install directory - to build the installer, these should be in the same directory as the install script (this file)
 	setOutPath $INSTDIR
 	# Files added here should be removed by the uninstaller (see section "uninstall")
+	file pharo.ico
 	file Pharo-win\Pharo\FT2Plugin.dll
+	file Pharo-win\Pharo\images
+	file Pharo-win\Pharo\images\pharo-stable.zip
 	file Pharo-win\Pharo\libcairo-2.dll
 	file Pharo-win\Pharo\libeay32.dll
 	file Pharo-win\Pharo\libfreetype-6.dll
@@ -60,21 +63,36 @@ section "install"
 	file Pharo-win\Pharo\libssh2-1.dll
 	file Pharo-win\Pharo\Pharo.changes
 	file Pharo-win\Pharo\Pharo.exe
-	file pharo.ico
 	file Pharo-win\Pharo\Pharo.image
 	file Pharo-win\Pharo\Pharo.ini
-	file Pharo-win\Pharo\PharoV10.sources
-	file Pharo-win\Pharo\PharoV20.sources
-	file Pharo-win\Pharo\PharoV30.sources
-	file Pharo-win\Pharo\PharoV40.sources
 	file Pharo-win\Pharo\PharoV50.sources
 	file Pharo-win\Pharo\README.txt
 	file Pharo-win\Pharo\SDL2.dll
 	file Pharo-win\Pharo\SqueakSSL.dll
-	file Pharo-win\Pharo\SurfacePlugin.dll	
 	file Pharo-win\Pharo\ssleay32.dll
+	file Pharo-win\Pharo\SurfacePlugin.dll
+	file Pharo-win\Pharo\vm
+	file Pharo-win\Pharo\vm\40
+	file Pharo-win\Pharo\vm\40\FT2Plugin.dll
+	file Pharo-win\Pharo\vm\40\libcairo-2.dll
+	file Pharo-win\Pharo\vm\40\libeay32.dll
+	file Pharo-win\Pharo\vm\40\libfreetype-6.dll
+	file Pharo-win\Pharo\vm\40\libgit2.dll
+	file Pharo-win\Pharo\vm\40\libpixman-1-0.dll
+	file Pharo-win\Pharo\vm\40\libpng-3.dll
+	file Pharo-win\Pharo\vm\40\libssh2-1.dll
+	file Pharo-win\Pharo\vm\40\Pharo.exe
+	file Pharo-win\Pharo\vm\40\PharoV10.sources
+	file Pharo-win\Pharo\vm\40\PharoV20.sources
+	file Pharo-win\Pharo\vm\40\PharoV30.sources
+	file Pharo-win\Pharo\vm\40\PharoV40.sources
+	file Pharo-win\Pharo\vm\40\SDL2.dll
+	file Pharo-win\Pharo\vm\40\SqueakFFIPrims.dll
+	file Pharo-win\Pharo\vm\40\SqueakSSL.dll
+	file Pharo-win\Pharo\vm\40\ssleay32.dll
+	file Pharo-win\Pharo\vm\40\zlib1.dll
 	file Pharo-win\Pharo\zlib1.dll
- 
+
 	# Uninstaller - See function un.onInit and section "uninstall" for configuration
 	writeUninstaller "$INSTDIR\uninstall.exe"
  
@@ -120,8 +138,11 @@ section "uninstall"
 	delete "$SMPROGRAMS\${APPNAME}\${APPNAME}.lnk"
 	# Try to remove the Start Menu folder - this will only happen if it is empty
 	rmDir "$SMPROGRAMS\${APPNAME}"
- 
+
+	delete $INSTDIR\pharo.ico
 	delete $INSTDIR\FT2Plugin.dll
+	delete $INSTDIR\images
+	delete $INSTDIR\images\pharo-stable.zip
 	delete $INSTDIR\libcairo-2.dll
 	delete $INSTDIR\libeay32.dll
 	delete $INSTDIR\libfreetype-6.dll
@@ -131,21 +152,36 @@ section "uninstall"
 	delete $INSTDIR\libssh2-1.dll
 	delete $INSTDIR\Pharo.changes
 	delete $INSTDIR\Pharo.exe
-	delete $INSTDIR\pharo.ico
 	delete $INSTDIR\Pharo.image
 	delete $INSTDIR\Pharo.ini
-	delete $INSTDIR\PharoV10.sources
-	delete $INSTDIR\PharoV20.sources
-	delete $INSTDIR\PharoV30.sources
-	delete $INSTDIR\PharoV40.sources
 	delete $INSTDIR\PharoV50.sources
 	delete $INSTDIR\README.txt
 	delete $INSTDIR\SDL2.dll
 	delete $INSTDIR\SqueakSSL.dll
-	delete $INSTDIR\SurfacePlugin.dll
 	delete $INSTDIR\ssleay32.dll
+	delete $INSTDIR\SurfacePlugin.dll
+	delete $INSTDIR\vm
+	delete $INSTDIR\vm\40
+	delete $INSTDIR\vm\40\FT2Plugin.dll
+	delete $INSTDIR\vm\40\libcairo-2.dll
+	delete $INSTDIR\vm\40\libeay32.dll
+	delete $INSTDIR\vm\40\libfreetype-6.dll
+	delete $INSTDIR\vm\40\libgit2.dll
+	delete $INSTDIR\vm\40\libpixman-1-0.dll
+	delete $INSTDIR\vm\40\libpng-3.dll
+	delete $INSTDIR\vm\40\libssh2-1.dll
+	delete $INSTDIR\vm\40\Pharo.exe
+	delete $INSTDIR\vm\40\PharoV10.sources
+	delete $INSTDIR\vm\40\PharoV20.sources
+	delete $INSTDIR\vm\40\PharoV30.sources
+	delete $INSTDIR\vm\40\PharoV40.sources
+	delete $INSTDIR\vm\40\SDL2.dll
+	delete $INSTDIR\vm\40\SqueakFFIPrims.dll
+	delete $INSTDIR\vm\40\SqueakSSL.dll
+	delete $INSTDIR\vm\40\ssleay32.dll
+	delete $INSTDIR\vm\40\zlib1.dll
 	delete $INSTDIR\zlib1.dll
- 
+
 	# Always delete uninstaller as the last action
 	delete $INSTDIR\uninstall.exe
  
