@@ -14,7 +14,7 @@ VM_PATH="$BUILD_PATH/vm"
 
 # help function
 function display_help() {
-	echo "$(basename $0) -i input -o output [-n name] [-t title] [-v appversion] [-r pharoversion] [-s sourcesversion] [-c icon] [-w timestamp] -p mac|win|linux"
+	echo "$(basename $0) -i input -o output [-n name] [-t title] [-v appversion] [-r pharoversion] [-s sourcesversion] [-c icon] [-w timestamp] [-X] -p mac|win|linux"
 	echo " -i 		input product name, image from images-directory, or successful jenkins build"
 	echo " -o 		output product name (e.g. pharo1.0)"
 	echo " -n 		the name of the executable (e.g. pharo)"
@@ -24,6 +24,7 @@ function display_help() {
 	echo " -s 		the sources to use (default is version)"
 	echo " -c 		the icon of the application (e.g. Pharo)"
 	echo " -w 		a timestamp string (e.g. `date +'%B %d, %Y'`)"
+	echo " -X 		build 64bits version"
 	echo " -p 		build a file for platform mac, win or linux (e.g. mac)"
 }
 
@@ -51,7 +52,7 @@ function copy_ressources() {
 }
 
 # parse options
-while getopts ":i:o:n:t:v:r:s:c:w:p:?" OPT ; do
+while getopts ":i:o:n:t:v:r:s:c:w:p:X?" OPT ; do
 	case "$OPT" in
 
 		# input
@@ -100,10 +101,10 @@ while getopts ":i:o:n:t:v:r:s:c:w:p:?" OPT ; do
 		s) OPTION_SOURCE_VERSION="$OPTARG" ;;
 		c) OPTION_ICON="$OPTARG" ;;
 		w) OPTION_WHEN="$OPTARG" ;;
-		
+		# architecture
+		X) ARCH="64" ;;
 		# platform
 		p) OPTION_PLATFORM="$OPTARG" ;;
-
 		# show help
 		\?)	display_help
 			exit 1
@@ -245,7 +246,7 @@ copy_ressources
 
 # copy over Linux VM files
 if [ "$OPTION_PLATFORM" = "linux" ]; then
-	LINUX_VM_PATH="pharo-linux-stable.zip"
+	LINUX_VM_PATH="pharo$ARCH-linux-stable.zip"
 	test -f $LINUX_VM_PATH || wget http://files.pharo.org/get-files/$PHARO_VERSION_PATH/$LINUX_VM_PATH
   
 	if [ -f "$LINUX_VM_PATH" ] ; then
@@ -258,7 +259,7 @@ fi
 
 # copy over Mac OS VM files
 if [ "$OPTION_PLATFORM" = "mac" ]; then
-	MAC_VM_PATH="pharo-mac-stable.zip"
+	MAC_VM_PATH="pharo$ARCH-mac-stable.zip"
 	test -f $MAC_VM_PATH || wget http://files.pharo.org/get-files/$PHARO_VERSION_PATH/$MAC_VM_PATH
 
 	if [ -f "$MAC_VM_PATH" ] ; then
