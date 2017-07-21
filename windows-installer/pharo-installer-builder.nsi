@@ -55,29 +55,31 @@ section "install"
 	# find Pharo -depth 1 -type f -not -iname "*.zip" -exec bash -c 'file=$(basename {}); echo "file Pharo-win\Pharo\\$file"' \;
 
 	file Pharo-win\Pharo\FT2Plugin.dll
+	file Pharo-win\Pharo\iconv.dll
 	file Pharo-win\Pharo\libcairo-2.dll
 	file Pharo-win\Pharo\libeay32.dll
-	file Pharo-win\Pharo\libfreetype-6.dll
-	file Pharo-win\Pharo\libgcc_s_dw2-1.dll
+	file Pharo-win\Pharo\libfreetype.dll
+	file Pharo-win\Pharo\libgcc_s_sjlj-1.dll
 	file Pharo-win\Pharo\libgit2.dll
 	file Pharo-win\Pharo\libpixman-1-0.dll
 	file Pharo-win\Pharo\libpng16-16.dll
 	file Pharo-win\Pharo\libssh2-1.dll
+	file Pharo-win\Pharo\libwinpthread-1.dll
 	file Pharo-win\Pharo\Pharo.changes
 	file Pharo-win\Pharo\Pharo.exe
 	file Pharo-win\Pharo\Pharo.image
 	file Pharo-win\Pharo\Pharo.ini
 	file Pharo-win\Pharo\PharoConsole.exe
-	file Pharo-win\Pharo\PharoV50.sources
+	file Pharo-win\Pharo\PharoV60.sources
 	file Pharo-win\Pharo\README.txt
 	file Pharo-win\Pharo\SDL2.dll
 	file Pharo-win\Pharo\SqueakSSL.dll
 	file Pharo-win\Pharo\ssleay32.dll
 	file Pharo-win\Pharo\SurfacePlugin.dll
 	file Pharo-win\Pharo\zlib1.dll
+
 	# find Pharo -type d -depth 1 -exec bash -c 'file=$(basename {}); echo "file /r Pharo-win\Pharo\\$file"' \;
 	file /r Pharo-win\Pharo\images
-	file /r Pharo-win\Pharo\vm
 
 	# Uninstaller - See function un.onInit and section "uninstall" for configuration
 	writeUninstaller "$INSTDIR\uninstall.exe"
