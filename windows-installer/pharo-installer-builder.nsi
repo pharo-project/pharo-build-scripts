@@ -71,6 +71,7 @@ section "install"
 	file Pharo-win\Pharo\Pharo.ini
 	file Pharo-win\Pharo\PharoConsole.exe
 	file Pharo-win\Pharo\PharoV60.sources
+        file Pharo-win\Pharo\ProcessWrapperPlugin.dll
 	file Pharo-win\Pharo\README.txt
 	file Pharo-win\Pharo\SDL2.dll
 	file Pharo-win\Pharo\SqueakSSL.dll
