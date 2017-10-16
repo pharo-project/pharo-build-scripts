@@ -33,19 +33,8 @@ outfile "pharo_installer.exe"
 page directory
 Page instfiles
 
-!macro VerifyUserIsAdmin
-UserInfo::GetAccountType
-pop $0
-${If} $0 != "admin" ;Require admin rights on NT4+
-        messageBox mb_iconstop "Administrator rights required!"
-        setErrorLevel 740 ;ERROR_ELEVATION_REQUIRED
-        quit
-${EndIf}
-!macroend
- 
 function .onInit
 	setShellVarContext all
-	!insertmacro VerifyUserIsAdmin
 functionEnd
 
 section "install"
@@ -117,10 +106,8 @@ function un.onInit
 	SetShellVarContext all
  
 	#Verify the uninstaller - last chance to back out
-	MessageBox MB_OKCANCEL "Permanantly remove ${APPNAME}?" IDOK next
+	MessageBox MB_OKCANCEL "Permanently remove ${APPNAME}?" IDCANCEL
 		Abort
-	next:
-	!insertmacro VerifyUserIsAdmin
 functionEnd
  
 section "uninstall"
