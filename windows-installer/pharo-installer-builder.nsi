@@ -13,7 +13,9 @@
 # This is the size (in kB) of all the files copied into "Program Files"
 !define INSTALLSIZE 69664
 
-RequestExecutionLevel admin ;Require admin rights on NT6+ (When UAC is turned on)
+# RequestExecutionLevel highest will force members of the administrator group to elevate while normal users can run it with no UAC interaction 
+# https://github.com/NSIS-Dev/Documentation/blob/master/Reference/RequestExecutionLevel.md
+RequestExecutionLevel highest 
 
 InstallDir "$PROGRAMFILES\${APPNAME}"
 
