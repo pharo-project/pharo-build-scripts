@@ -195,6 +195,10 @@ Version History
 2.3.2
 - The size gripper can be used to resize the window
 
+2.3.3
+- Update check switched from JNetLib to WinInet
+- New file type icons
+
 
 Copyright Information
 ---------------------

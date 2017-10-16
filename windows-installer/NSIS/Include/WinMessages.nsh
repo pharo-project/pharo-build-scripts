@@ -99,13 +99,13 @@ UDM     Up-down control
 
 #Generic Common Control Messages#
 !define CCM_FIRST 0x2000
-!define CCM_SETBKCOLOR       /math ${CCM_FIRST} + 0x1 ; IE4
-!define CCM_SETUNICODEFORMAT /math ${CCM_FIRST} + 0x5 
-!define CCM_GETUNICODEFORMAT /math ${CCM_FIRST} + 0x6
-!define CCM_SETVERSION       /math ${CCM_FIRST} + 0x7 ; IE5
-!define CCM_GETVERSION       /math ${CCM_FIRST} + 0x8
-!define CCM_SETWINDOWTHEME   /math ${CCM_FIRST} + 0xB ; WinXP
-!define CCM_DPISCALE         /math ${CCM_FIRST} + 0xC
+!define /math CCM_SETBKCOLOR       ${CCM_FIRST} + 0x1 ; IE4
+!define /math CCM_SETUNICODEFORMAT ${CCM_FIRST} + 0x5 
+!define /math CCM_GETUNICODEFORMAT ${CCM_FIRST} + 0x6
+!define /math CCM_SETVERSION       ${CCM_FIRST} + 0x7 ; IE5
+!define /math CCM_GETVERSION       ${CCM_FIRST} + 0x8
+!define /math CCM_SETWINDOWTHEME   ${CCM_FIRST} + 0xB ; WinXP
+!define /math CCM_DPISCALE         ${CCM_FIRST} + 0xC
 
 !define CCS_TOP 1
 !define CCS_BOTTOM 3
@@ -600,10 +600,10 @@ UDM     Up-down control
 !define LVCF_WIDTH   2
 !define LVCF_TEXT    4
 !define LVCF_SUBITEM 8
-!define SYSSTRUCT_LVITEM_V1 (i,i,i,i,i,t,i,i,p)
-!define SYSSTRUCT_LVITEM_V2 (i,i,i,i,i,t,i,i,p,i)           ; IE3
-!define SYSSTRUCT_LVITEM_V3 (i,i,i,i,i,t,i,i,p,i,i,i,i)     ; WinXP + ComCtl32 v6
-!define SYSSTRUCT_LVITEM_V4 (i,i,i,i,i,t,i,i,p,i,i,i,i,i,i) ; WinVista + ComCtl32 v6
+!define SYSSTRUCT_LVITEM_V1 (i,i,i,i,&i${NSIS_PTR_SIZE},t,i,i,p)
+!define SYSSTRUCT_LVITEM_V2 (i,i,i,i,&i${NSIS_PTR_SIZE},t,i,i,p,i)           ; IE3
+!define SYSSTRUCT_LVITEM_V3 (i,i,i,i,&i${NSIS_PTR_SIZE},t,i,i,p,i,i,i,i)     ; WinXP + ComCtl32 v6
+!define SYSSTRUCT_LVITEM_V4 (i,i,i,i,&i${NSIS_PTR_SIZE},t,i,i,p,i,i,i,i,i,i) ; WinVista + ComCtl32 v6
 !define LVSCW_AUTOSIZE -1
 !define LVSCW_AUTOSIZE_USEHEADER -2
 !define LVM_FIRST                          0x00001000
@@ -670,7 +670,7 @@ ${_NSIS_DEFAW} LVM_SETITEMTEXT
 !define TCS_SCROLLOPPOSITE 0x0001
 !define TCIF_TEXT  1
 !define TCIF_PARAM 8
-!define SYSSTRUCT_TCITEM (i,i,i,t,i,i,p)
+!define SYSSTRUCT_TCITEM (i,i,&i${NSIS_PTR_SIZE},t,i,i,p)
 !define TCM_FIRST             0x1300
 !define /math TCM_INSERTITEMA ${TCM_FIRST} + 7
 !define /math TCM_GETCURSEL   ${TCM_FIRST} + 11

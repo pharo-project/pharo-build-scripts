@@ -34,6 +34,11 @@
 ;   2008R2
 ;   8
 ;   2012
+;   8.1
+;   2012R2
+;   10
+;
+;   Note: Windows 8.1 and later will be detected as Windows 8 unless ManifestSupportedOS is set correctly!
 ;
 ; AtLeastServicePack checks if the installer is running on Windows service pack version at least as specified.
 ; IsServicePack checks if the installer is running on Windows service pack version exactly as specified.
@@ -122,7 +127,7 @@
 ;define WINVER_98SE      0x040a0000 ;4.10.2222
 !define WINVER_ME_NT     0x045a0000 ;4.90.3000
 !define WINVER_ME        0x045a0000 ;4.90.3000
-;define WINVER_NT3d51               ;3.51.1057
+;define WINVER_NT3.51               ;3.51.1057
 !define WINVER_NT4_NT    0x84000000 ;4.00.1381
 !define WINVER_NT4       0x04000000 ;4.00.1381
 !define WINVER_2000_NT   0x85000000 ;5.00.2195
@@ -144,6 +149,14 @@
 !define WINVER_8         0x06020000 ;6.02.9200
 !define WINVER_2012_NT   0x86020001 ;6.02.9200
 !define WINVER_2012      0x06020001 ;6.02.9200
+!define WINVER_8.1_NT    0x86030000 ;6.03.9600
+!define WINVER_8.1       0x06030000 ;6.03.9600
+!define WINVER_2012R2_NT 0x86030001 ;6.03.9600
+!define WINVER_2012R2    0x06030001 ;6.03.9600
+!define WINVER_10_NT     0x8A000000 ;10.0.10240
+!define WINVER_10        0x0A000000 ;10.0.10240
+!define WINVER_2016_NT   0x8A000001 ;10.0.14393
+!define WINVER_2016      0x0A000001 ;10.0.14393
 
 
 # use this to make all nt > 9x
@@ -289,7 +302,7 @@
       Pop $0
 
       # is server?
-      IntCmp $0 ${VER_NT_WORKSTATION} _winver_noserver _winver_noserver ""
+      IntCmp $0 ${VER_NT_WORKSTATION} _winver_noserver
         IntOp $__WINVERSP $__WINVERSP | ${_WINVER_NTSRVBIT}
       _winver_noserver:
 
@@ -402,6 +415,10 @@
   !insertmacro __WinVer_DefineOSTest ${Test} 2008R2 '${Suffix}'
   !insertmacro __WinVer_DefineOSTest ${Test} 8      '${Suffix}'
   !insertmacro __WinVer_DefineOSTest ${Test} 2012   '${Suffix}'
+  !insertmacro __WinVer_DefineOSTest ${Test} 8.1    '${Suffix}'
+  !insertmacro __WinVer_DefineOSTest ${Test} 2012R2 '${Suffix}'
+  !insertmacro __WinVer_DefineOSTest ${Test} 10     '${Suffix}'
+  !insertmacro __WinVer_DefineOSTest ${Test} 2016   '${Suffix}'
 !macroend
 
 !insertmacro __WinVer_DefineOSTests AtLeast ""

@@ -11,12 +11,20 @@
 ;--------------------------------
 ;Configuration
 
-!ifdef OUTFILE
-  OutFile "${OUTFILE}"
+!if ${NSIS_PTR_SIZE} > 4
+  !define BITS 64
+  !define NAMESUFFIX " (64 bit)"
 !else
-  OutFile ..\nsis-${VERSION}-setup.exe
+  !define BITS 32
+  !define NAMESUFFIX ""
 !endif
 
+!ifndef OUTFILE
+  !define OUTFILE "..\nsis${BITS}-${VERSION}-setup.exe"
+  !searchreplace OUTFILE "${OUTFILE}" nsis32 nsis
+!endif
+
+OutFile "${OUTFILE}"
 Unicode true
 SetCompressor /SOLID lzma
 
@@ -24,7 +32,7 @@ InstType "Full"
 InstType "Lite"
 InstType "Minimal"
 
-InstallDir $PROGRAMFILES\NSIS
+InstallDir $PROGRAMFILES${BITS}\NSIS
 InstallDirRegKey HKLM Software\NSIS ""
 
 RequestExecutionLevel admin
@@ -49,7 +57,7 @@ RequestExecutionLevel admin
 
 ;Names
 Name "NSIS"
-Caption "NSIS ${VERSION} Setup"
+Caption "NSIS ${VERSION}${NAMESUFFIX} Setup"
 
 !define REG_UNINST_KEY "Software\Microsoft\Windows\CurrentVersion\Uninstall\NSIS"
 
@@ -60,14 +68,18 @@ Caption "NSIS ${VERSION} Setup"
 ;Interface Settings
 !define MUI_ABORTWARNING
 
+!define MUI_ICON "${NSISDIR}\Contrib\Graphics\Icons\nsis3-install.ico"
+!define MUI_UNICON "${NSISDIR}\Contrib\Graphics\Icons\nsis3-uninstall.ico"
+
 !define MUI_HEADERIMAGE
-!define MUI_WELCOMEFINISHPAGE_BITMAP "${NSISDIR}\Contrib\Graphics\Wizard\nsis.bmp"
+!define MUI_HEADERIMAGE_BITMAP "${NSISDIR}\Contrib\Graphics\Header\nsis3-branding.bmp"
+!define MUI_WELCOMEFINISHPAGE_BITMAP "${NSISDIR}\Contrib\Graphics\Wizard\nsis3-branding.bmp"
 
 !define MUI_COMPONENTSPAGE_SMALLDESC
 
 ;Pages
 !define MUI_WELCOMEPAGE_TITLE "Welcome to the NSIS ${VERSION} Setup Wizard"
-!define MUI_WELCOMEPAGE_TEXT "This wizard will guide you through the installation of NSIS (Nullsoft Scriptable Install System) ${VERSION}, the next generation of the Windows installer and uninstaller system that doesn't suck and isn't huge.$\r$\n$\r$\nNSIS 2 includes a new Modern User Interface, LZMA compression, support for multiple languages and an easy plug-in system.$\r$\n$\r$\n$_CLICK"
+!define MUI_WELCOMEPAGE_TEXT "This wizard will guide you through the installation of NSIS (Nullsoft Scriptable Install System) ${VERSION}, the next generation of the Windows installer and uninstaller system that doesn't suck and isn't huge.$\r$\n$\r$\nNSIS includes a Modern User Interface, LZMA compression, support for multiple languages and an easy plug-in system.$\r$\n$\r$\n$_CLICK"
 
 !insertmacro MUI_PAGE_WELCOME
 !insertmacro MUI_PAGE_LICENSE "..\COPYING"
@@ -112,13 +124,21 @@ VIAddVersionKey "LegalCopyright" "http://nsis.sf.net/License"
 ;Installer Sections
 
 !macro InstallPlugin pi
-  File "/oname=$InstDir\Plugins\x86-ansi\${pi}.dll" ..\Plugins\x86-ansi\${pi}.dll
-  File "/oname=$InstDir\Plugins\x86-unicode\${pi}.dll" ..\Plugins\x86-unicode\${pi}.dll
+  !if ${BITS} >= 64
+    File "/oname=$InstDir\Plugins\amd64-unicode\${pi}.dll" ..\Plugins\amd64-unicode\${pi}.dll
+  !else
+    File "/oname=$InstDir\Plugins\x86-ansi\${pi}.dll" ..\Plugins\x86-ansi\${pi}.dll
+    File "/oname=$InstDir\Plugins\x86-unicode\${pi}.dll" ..\Plugins\x86-unicode\${pi}.dll
+  !endif
 !macroend
 
 !macro InstallStub stub
-  File ..\Stubs\${stub}-x86-ansi
-  File ..\Stubs\${stub}-x86-unicode
+  !if ${BITS} >= 64
+    File ..\Stubs\${stub}-amd64-unicode
+  !else
+    File ..\Stubs\${stub}-x86-ansi
+    File ..\Stubs\${stub}-x86-unicode
+  !endif
 !macroend
 
 ${MementoSection} "NSIS Core Files (required)" SecCore
@@ -141,8 +161,11 @@ ${MementoSection} "NSIS Core Files (required)" SecCore
   File ..\makensisw.exe
   File ..\COPYING
   File ..\NSIS.chm
+  !pragma verifychm "..\NSIS.chm"
   File ..\NSIS.exe
-  File /nonfatal ..\NSIS.exe.manifest
+  !if /FileExists "..\NSIS.exe.manifest"
+    File "..\NSIS.exe.manifest"
+  !endif
 
   SetOutPath $INSTDIR\Bin
   File ..\Bin\makensis.exe
@@ -214,10 +237,21 @@ ${MementoSection} "NSIS Core Files (required)" SecCore
 
   SetOutPath $INSTDIR\Bin
   File ..\Bin\LibraryLocal.exe
-  File ..\Bin\RegTool.bin
+  !if ${BITS} >= 64
+    File /NonFatal  ..\Bin\RegTool-x86.bin
+    File            ..\Bin\RegTool-amd64.bin
+  !else
+    File            ..\Bin\RegTool-x86.bin
+    !if /FileExists ..\Bin\RegTool-amd64.bin ; It is unlikely that this exists, avoid the /NonFatal warning.
+      File          ..\Bin\RegTool-amd64.bin
+    !endif
+  !endif
 
   CreateDirectory $INSTDIR\Plugins\x86-ansi
   CreateDirectory $INSTDIR\Plugins\x86-unicode
+  !if ${BITS} >= 64
+    CreateDirectory $INSTDIR\Plugins\amd64-unicode
+  !endif
   !insertmacro InstallPlugin TypeLib
 
   ReadRegStr $R0 HKCR ".nsi" ""
@@ -245,14 +279,14 @@ ${MementoSection} "NSIS Core Files (required)" SecCore
   WriteRegStr HKCR ".nsh" "" "NSIS.Header"
   WriteRegStr HKCR ".nsh" "PerceivedType" "text"
   WriteRegStr HKCR "NSIS.Header" "" "NSIS Header File"
-  WriteRegStr HKCR "NSIS.Header\DefaultIcon" "" "$INSTDIR\makensisw.exe,1"
+  WriteRegStr HKCR "NSIS.Header\DefaultIcon" "" "$INSTDIR\makensisw.exe,2"
   ReadRegStr $R0 HKCR "NSIS.Header\shell\open\command" ""
   ${If} $R0 == ""
     WriteRegStr HKCR "NSIS.Header\shell" "" "open"
     WriteRegStr HKCR "NSIS.Header\shell\open\command" "" 'notepad.exe "%1"'
   ${EndIf}
 
-  System::Call 'Shell32::SHChangeNotify(i ${SHCNE_ASSOCCHANGED}, i ${SHCNF_IDLIST}, i 0, i 0)'
+  System::Call 'Shell32::SHChangeNotify(i ${SHCNE_ASSOCCHANGED}, i ${SHCNF_IDLIST}, p0, p0)'
 
 ${MementoSectionEnd}
 
@@ -330,10 +364,10 @@ ${MementoSection} "Desktop Shortcut" SecShortcuts
   SectionIn 1 2
   SetOutPath $INSTDIR
 !ifndef NO_STARTMENUSHORTCUTS
-  CreateShortCut "$SMPROGRAMS\NSIS.lnk" "$INSTDIR\NSIS.exe"
+  CreateShortcut "$SMPROGRAMS\NSIS${NAMESUFFIX}.lnk" "$INSTDIR\NSIS.exe"
 !endif
 
-  CreateShortCut "$DESKTOP\NSIS.lnk" "$INSTDIR\NSIS.exe"
+  CreateShortcut "$DESKTOP\NSIS${NAMESUFFIX}.lnk" "$INSTDIR\NSIS.exe"
 
 ${MementoSectionEnd}
 
@@ -471,11 +505,10 @@ ${MementoSection} "Language Files" SecLangFiles
   SetOutPath $INSTDIR\Bin
   File ..\Bin\MakeLangID.exe
 
-  !insertmacro SectionFlagIsSet ${SecInterfacesModernUI} ${SF_SELECTED} mui nomui
-  mui:
+  ${If} ${SectionIsSelected} ${SecInterfacesModernUI}
     SetOutPath "$INSTDIR\Contrib\Language files"
     File "..\Contrib\Language files\*.nsh"
-  nomui:
+  ${EndIf}
 
 ${MementoSectionEnd}
 
@@ -761,13 +794,13 @@ Section -post
     DetailPrint "Configuring Modern UI..."
     SetDetailsPrint listonly
 
-    ${If} ${SectionIsSelected} ${SecLangFiles}
+    ${IfNot} ${SectionIsSelected} ${SecLangFiles}
       SetOutPath "$INSTDIR\Contrib\Language files"
       File "..\Contrib\Language files\English.nlf"
       File "..\Contrib\Language files\English.nsh"
     ${EndIf}
 
-    ${If} ${SectionIsSelected} ${SecGraphics}
+    ${IfNot} ${SectionIsSelected} ${SecGraphics}
       SetOutPath $INSTDIR\Contrib\Graphics\Checks
       File "..\Contrib\Graphics\Checks\modern.bmp"
       SetOutPath $INSTDIR\Contrib\Graphics\Icons
@@ -797,8 +830,8 @@ Section -post
 
   WriteRegExpandStr HKLM "${REG_UNINST_KEY}" "UninstallString" '"$INSTDIR\uninst-nsis.exe"'
   WriteRegExpandStr HKLM "${REG_UNINST_KEY}" "InstallLocation" "$INSTDIR"
-  WriteRegStr HKLM "${REG_UNINST_KEY}" "DisplayName" "Nullsoft Install System"
-  WriteRegStr HKLM "${REG_UNINST_KEY}" "DisplayIcon" "$INSTDIR\NSIS.exe,0"
+  WriteRegStr HKLM "${REG_UNINST_KEY}" "DisplayName" "Nullsoft Install System${NAMESUFFIX}"
+  WriteRegStr HKLM "${REG_UNINST_KEY}" "DisplayIcon" "$INSTDIR\uninst-nsis.exe,0"
   WriteRegStr HKLM "${REG_UNINST_KEY}" "DisplayVersion" "${VERSION}"
 !ifdef VER_MAJOR & VER_MINOR & VER_REVISION & VER_BUILD
   WriteRegDWORD HKLM "${REG_UNINST_KEY}" "VersionMajor" "${VER_MAJOR}"
@@ -1012,18 +1045,18 @@ Section Uninstall
   DetailPrint "Deleting Registry Keys..."
   SetDetailsPrint listonly
 
-  ReadRegStr $R0 HKCR ".nsi" ""
-  StrCmp $R0 "NSIS.Script" 0 +2
-    DeleteRegKey HKCR ".nsi"
+  !macro AssocDeleteFileExtAndProgId _hkey _dotext _pid
+  ReadRegStr $R0 ${_hkey} "Software\Classes\${_dotext}" ""
+  StrCmp $R0 "${_pid}" 0 +2
+    DeleteRegKey ${_hkey} "Software\Classes\${_dotext}"
 
-  ReadRegStr $R0 HKCR ".nsh" ""
-  StrCmp $R0 "NSIS.Header" 0 +2
-    DeleteRegKey HKCR ".nsh"
+  DeleteRegKey ${_hkey} "Software\Classes\${_pid}"
+  !macroend
 
-  DeleteRegKey HKCR "NSIS.Script"
-  DeleteRegKey HKCR "NSIS.Header"
+  !insertmacro AssocDeleteFileExtAndProgId HKLM ".nsi" "NSIS.Script"
+  !insertmacro AssocDeleteFileExtAndProgId HKLM ".nsh" "NSIS.Header"
 
-  System::Call 'Shell32::SHChangeNotify(i ${SHCNE_ASSOCCHANGED}, i ${SHCNF_IDLIST}, i 0, i 0)'
+  System::Call 'Shell32::SHChangeNotify(i ${SHCNE_ASSOCCHANGED}, i ${SHCNF_IDLIST}, p0, p0)'
 
   DeleteRegKey HKLM "${REG_UNINST_KEY}"
   DeleteRegKey HKLM "Software\NSIS"
@@ -1032,8 +1065,8 @@ Section Uninstall
   DetailPrint "Deleting Files..."
   SetDetailsPrint listonly
 
-  Delete $SMPROGRAMS\NSIS.lnk
-  Delete $DESKTOP\NSIS.lnk
+  Delete "$SMPROGRAMS\NSIS${NAMESUFFIX}.lnk"
+  Delete "$DESKTOP\NSIS${NAMESUFFIX}.lnk"
   Delete $INSTDIR\makensis.exe
   Delete $INSTDIR\makensisw.exe
   Delete $INSTDIR\NSIS.exe
