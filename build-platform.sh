@@ -251,7 +251,7 @@ if [ "$OPTION_PLATFORM" = "linux" ]; then
   
 	if [ -f "$LINUX_VM_PATH" ] ; then
 	    unzip -q "$LINUX_VM_PATH" -d "$OUTPUT_PATH/tmp"
-	    mv "$OUTPUT_PATH/tmp/" "$OUTPUT_PATH/$BIN_PATH"
+	    mv "$OUTPUT_PATH/tmp/" "$OUTPUT_PATH/$VM_PATH"
 	else
 	    echo "Warning: Cannot find Linux VM!"
 	fi
