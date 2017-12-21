@@ -6,9 +6,9 @@
 
 # directory configuration
 BASE_PATH="$(cd "$(dirname "$0")" && pwd)"
-BASE_PATH='${BASE_PATH//\\//}"' # Replace backslash(“\”) with forward slash(“/”) 
+BASE_PATH="${BASE_PATH//\\//}" # Replace backslash(“\”) with forward slash(“/”) 
 BUILD_PATH="${WORKSPACE:=$BASE_PATH/builds}"|sed 's#/#\\/#g'
-BUILD_PATH='${BUILD_PATH//\\//}"' # Replace backslash(“\”) with forward slash(“/”) 
+BUILD_PATH="${BUILD_PATH//\\//}" # Replace backslash(“\”) with forward slash(“/”) 
 
 IMAGES_PATH="$BASE_PATH/images"
 ICONS_PATH="$BASE_PATH/platform/icons"
