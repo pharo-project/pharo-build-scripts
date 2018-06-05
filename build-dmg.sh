@@ -18,9 +18,6 @@ DMG_BACKGROUND_IMG=${DMG_BACKGROUND_IMG:-"background.png"}
 # will be positioned
 ICON_VPOSITION=${ICON_VPOSITION:-168}
 
-# you should not need to change these
-APP_EXE="${APP_NAME}.app/Contents/MacOS/${APP_NAME}"
-
 VOL_NAME="${APP_NAME} ${VERSION}"   # volume name will be "SuperCoolApp 1.0.0"
 DMG_TMP="${VOL_NAME}-temp.dmg"
 DMG_FINAL="${VOL_NAME/ /_}.dmg"         # final DMG name will be "SuperCoolApp_1.0.0.dmg"
