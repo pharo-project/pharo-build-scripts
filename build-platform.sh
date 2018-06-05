@@ -193,7 +193,7 @@ case $OPTION_PLATFORM in
 		EXECUTABLE_NAME="pharo"
 		RESOURCES_PATH="shared"
 		PLATFORM_ICONS_PATH="icons"
-		BIN_PATH="bin"
+		BIN_PATH="pharo-vm"
 		;;
 	*) 
 		echo "$(basename $0): invalid platform given"
