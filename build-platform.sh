@@ -190,7 +190,7 @@ case $OPTION_PLATFORM in
 		;;
 	linux) 
 		PRODUCT_NAME="`echo $OPTION_NAME | awk '{print tolower($0)}'`" 
-		EXECUTABLE_NAME="pharo"
+		EXECUTABLE_NAME="${EXECUTABLE_NAME:=pharo}"
 		RESOURCES_PATH="shared"
 		PLATFORM_ICONS_PATH="icons"
 		BIN_PATH="pharo-vm"
