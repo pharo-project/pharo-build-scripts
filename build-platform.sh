@@ -10,7 +10,7 @@ BASE_PATH="${BASE_PATH//\\//}" # Replace backslash(“\”) with forward slash(�
 BUILD_PATH="${WORKSPACE:=$BASE_PATH/builds}"
 BUILD_PATH="${BUILD_PATH//\\//}" # Replace backslash(“\”) with forward slash(“/”) 
 
-IMAGES_PATH="$BASE_PATH/images"
+IMAGES_PATH="${IMAGES_PATH:=$BASE_PATH/images}"
 ICONS_PATH="$BASE_PATH/platform/icons"
 VM_PATH="$BUILD_PATH/vm"
 
