@@ -303,6 +303,8 @@ fi
 # ensure the linux script is executable
 if [ "$OPTION_PLATFORM" = "linux" ]; then
 	chmod +x "$OUTPUT_PATH/$EXECUTABLE_NAME"
+	# pharo launcher specific
+	chmod +x "$OUTPUT_PATH/pharo-launcher" || true
 fi 
 # zip up the application
 cd "$BUILD_PATH"
