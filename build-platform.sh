@@ -53,6 +53,36 @@ function copy_ressources() {
 	done
 }
 
+function copy_linux_vm() {
+	VM_TMP_PATH="$OUTPUT_PATH/tmp"
+	mkdir "$VM_TMP_PATH" && cd "$VM_TMP_PATH"
+	curl https://get.pharo.org/$ARCH/vm90 | bash
+	if [ -d "pharo-vm" ] ; then
+	    mv "$VM_TMP_PATH"/pharo-vm "$OUTPUT_PATH/$BIN_PATH"
+	    cd -
+	    rm -rf "$VM_TMP_PATH"
+	else
+	    echo "Warning: Cannot find Linux VM!"
+	fi	
+}
+
+function copy_mac_vm() {
+	VM_TMP_PATH="$OUTPUT_PATH/tmp"
+	mkdir "$VM_TMP_PATH" && cd "$VM_TMP_PATH"
+	curl https://get.pharo.org/$ARCH/vm90 | bash
+	if [ -d "pharo-vm" ] ; then
+	    #Ensuring bin and plugins
+	    mv "$VM_TMP_PATH/pharo-vm/Pharo.app/Contents/MacOS" "$OUTPUT_PATH/Contents"
+	    # Need to add this ugly '*' outside double-quotes to be able to copy the content of the folder (and not the folder itself) on linux
+	    cp -R "$VM_TMP_PATH/pharo-vm/Pharo.app/Contents/Resources/"* "$OUTPUT_PATH/Contents/Resources"
+
+	    cd -
+	    rm -rf "$VM_TMP_PATH"
+	else
+	    echo "Warning: Cannot find Mac OS VM!"
+	fi
+}
+
 # parse options
 while getopts ":i:o:n:t:v:r:s:c:w:p:X?" OPT ; do
 	case "$OPT" in
@@ -248,34 +278,12 @@ copy_ressources
 
 # copy over Linux VM files
 if [ "$OPTION_PLATFORM" = "linux" ]; then
-	LINUX_VM_PATH="pharo$ARCH-linux-stable.zip"
-	test -f $LINUX_VM_PATH || wget http://files.pharo.org/get-files/$PHARO_VERSION_PATH/$LINUX_VM_PATH
-  
-	if [ -f "$LINUX_VM_PATH" ] ; then
-	    unzip -q "$LINUX_VM_PATH" -d "$OUTPUT_PATH/tmp"
-	    mv "$OUTPUT_PATH/tmp/" "$OUTPUT_PATH/$BIN_PATH"
-	else
-	    echo "Warning: Cannot find Linux VM!"
-	fi
+	copy_linux_vm
 fi
 
 # copy over Mac OS VM files
 if [ "$OPTION_PLATFORM" = "mac" ]; then
-	MAC_VM_PATH="pharo$ARCH-mac-stable.zip"
-	test -f $MAC_VM_PATH || wget http://files.pharo.org/get-files/$PHARO_VERSION_PATH/$MAC_VM_PATH
-
-	if [ -f "$MAC_VM_PATH" ] ; then
-	    unzip -q "$MAC_VM_PATH" -d "$OUTPUT_PATH/tmp"
-    
-	    #Ensuring bin and plugins
-	    mv "$OUTPUT_PATH/tmp/Pharo.app/Contents/MacOS" "$OUTPUT_PATH/Contents"
-	    # Need to add this ugly '*' outside double-quotes to be able to copy the content of the folder (and not the folder itself) on linux
-	    cp -R "$OUTPUT_PATH/tmp/Pharo.app/Contents/Resources/"* "$OUTPUT_PATH/Contents/Resources"
-
-	    rm -rf "$OUTPUT_PATH/tmp"
-	else
-	    echo "Warning: Cannot find Mac OS VM!"
-	fi
+	copy_mac_vm
 fi
 
 # copy over Windows VM files
