@@ -56,7 +56,7 @@ function copy_ressources() {
 function copy_linux_vm() {
 	VM_TMP_PATH="$OUTPUT_PATH/tmp"
 	mkdir "$VM_TMP_PATH" && cd "$VM_TMP_PATH"
-	curl https://get.pharo.org/$ARCH/vm90 | bash
+	curl https://get.pharo.org/$ARCH/vm$PHARO_VERSION_PATH | bash
 	if [ -d "pharo-vm" ] ; then
 	    mv "$VM_TMP_PATH"/pharo-vm "$OUTPUT_PATH/$BIN_PATH"
 	    cd -
@@ -67,14 +67,21 @@ function copy_linux_vm() {
 }
 
 function copy_mac_vm() {
+	# Only works for MAC VM >= 90. If you need a VM < 90, you need to 
+	# udpate this method to use either the old or new VM URL format (see zeroconf).
+	MAC_VM_ARCH=${1:-"x86_64"} # allow to choose which VM arch to embed? x86_64 or arm64
+	FILES_URL="http://files.pharo.org/get-files/${PHARO_VERSION_PATH}"
+	VM_URL="${FILES_URL}/pharo-vm-Darwin-${MAC_VM_ARCH}-stable.zip"
 	VM_TMP_PATH="$OUTPUT_PATH/tmp"
 	mkdir "$VM_TMP_PATH" && cd "$VM_TMP_PATH"
-	curl https://get.pharo.org/$ARCH/vm90 | bash
-	if [ -d "pharo-vm" ] ; then
+	VM_ZIP="${VM_TMP_PATH}/vm.zip"
+	curl --silent --location --compressed --output "${VM_ZIP}" ${VM_URL}
+	if [ -f "${VM_ZIP}" ] ; then
+		unzip -q "${VM_ZIP}" -d "$VM_TMP_PATH"
 	    #Ensuring bin and plugins
-	    mv "$VM_TMP_PATH/pharo-vm/Pharo.app/Contents/MacOS" "$OUTPUT_PATH/Contents"
+	    mv "$VM_TMP_PATH/Pharo.app/Contents/MacOS" "$OUTPUT_PATH/Contents"
 	    # Need to add this ugly '*' outside double-quotes to be able to copy the content of the folder (and not the folder itself) on linux
-	    cp -R "$VM_TMP_PATH/pharo-vm/Pharo.app/Contents/Resources/"* "$OUTPUT_PATH/Contents/Resources"
+	    cp -R "$VM_TMP_PATH/Pharo.app/Contents/Resources/"* "$OUTPUT_PATH/Contents/Resources"
 
 	    cd -
 	    rm -rf "$VM_TMP_PATH"
