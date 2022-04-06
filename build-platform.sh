@@ -82,7 +82,15 @@ function copy_linux_vm() {
 function copy_mac_vm() {
 	# Only works for MAC VM >= 90. If you need a VM < 90, you need to 
 	# udpate this method to use either the old or new VM URL format (see zeroconf).
-	MAC_VM_ARCH=${1:-"x86_64"} # allow to choose which VM arch to embed? x86_64 or arm64
+	case "$ARCH" in
+	    64) MAC_VM_ARCH="x86_64"
+	        ;;
+		arm64) MAC_VM_ARCH="arm64"
+	        ;;
+	    *) 	echo "Error! Architecture $ARCH is not supported!"
+			exit 1
+			;;
+	esac
 	FILES_URL="http://files.pharo.org/get-files/${PHARO_VERSION_PATH}"
 	VM_URL="${FILES_URL}/pharo-vm-Darwin-${MAC_VM_ARCH}-stable.zip"
 	VM_TMP_PATH="$OUTPUT_PATH/tmp"
