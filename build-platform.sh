@@ -30,6 +30,19 @@ function display_help() {
 	echo " -p 		build a file for platform mac, win or linux (e.g. mac)"
 }
 
+# Will copy ressources found in INPUT PATH / bin to the target BIN path
+function copy_bin_files() {
+	mkdir -p "$OUTPUT_PATH/$BIN_PATH"
+	ls -1 "$INPUT_PATH" | while read FILE ; do
+		if [ "${FILE##*.}" != "sh" ] && [ $OPTION_PLATFORM != "win"] ; then
+			cp -r "$INPUT_PATH/$FILE" "$OUTPUT_PATH/$BIN_PATH"
+		fi
+		if [ "${FILE##*.}" != "bat" ] && [ $OPTION_PLATFORM == "win"] ; then
+			cp -r "$INPUT_PATH/$FILE" "$OUTPUT_PATH/$BIN_PATH"
+		fi
+	done
+}
+
 # Will copy ressources found in INPUT PATH to the target ressources path
 # This function handles platform specific files by only including files relevant for the targeted platform.
 # You can mix common ressources (for all platforms) and platform-specific ressources in a properly named folder (e.g. linux, mac or win).
@@ -282,6 +295,7 @@ find "$OUTPUT_PATH" | while read FILE ; do
 done
 
 copy_ressources
+copy_bin_files
 
 # copy over Linux VM files
 if [ "$OPTION_PLATFORM" = "linux" ]; then
