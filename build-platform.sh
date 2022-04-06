@@ -309,7 +309,7 @@ fi
 
 # copy over Windows VM files
 if [ "$OPTION_PLATFORM" = "win" ]; then
-	WIN_VM_PATH="${WIN_VM_PATH:=pharo-win-stable.zip}"
+	WIN_VM_PATH="${WIN_VM_PATH:=pharo-vm-Windows-x86_64-stable.zip}"
 	test -f $WIN_VM_PATH || wget http://files.pharo.org/get-files/$PHARO_VERSION_PATH/$WIN_VM_PATH
 
 	if [ -f "$WIN_VM_PATH" ] ; then
