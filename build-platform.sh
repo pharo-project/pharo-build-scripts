@@ -66,33 +66,40 @@ function copy_ressources() {
 	done
 }
 
-function copy_linux_vm() {
-	VM_TMP_PATH="$OUTPUT_PATH/tmp"
-	mkdir "$VM_TMP_PATH" && cd "$VM_TMP_PATH"
-	curl https://get.pharo.org/$ARCH/vm$PHARO_VERSION_PATH | bash
-	if [ -d "pharo-vm" ] ; then
-	    mv "$VM_TMP_PATH"/pharo-vm "$OUTPUT_PATH/$BIN_PATH"
-	    cd -
-	    rm -rf "$VM_TMP_PATH"
-	else
-	    echo "Warning: Cannot find Linux VM!"
-	fi	
-}
-
-function copy_mac_vm() {
-	# Only works for MAC VM >= 90. If you need a VM < 90, you need to 
-	# udpate this method to use either the old or new VM URL format (see zeroconf).
+function set_arch_path() {
 	case "$ARCH" in
-	    64) MAC_VM_ARCH="x86_64"
+	    64) export VM_ARCH_PATH="x86_64"
 	        ;;
-		arm64) MAC_VM_ARCH="arm64"
+		arm64) export VM_ARCH_PATH="arm64"
 	        ;;
 	    *) 	echo "Error! Architecture $ARCH is not supported!"
+			export VM_ARCH_PATH=
 			exit 1
 			;;
 	esac
+}
+
+function copy_linux_vm() {
+	# Only works for VM >= 90. If you need a VM < 90, you need to 
+	# udpate this method to use either the old or new VM URL format (see zeroconf).
+	set_arch_path
+	LINUX_VM_PATH="pharo-vm-Linux-$VM_ARCH_PATH-stable.zip"
+	test -f $LINUX_VM_PATH || wget http://files.pharo.org/get-files/$PHARO_VERSION_PATH/$LINUX_VM_PATH
+  
+	if [ -f "$LINUX_VM_PATH" ] ; then
+	    unzip -q "$LINUX_VM_PATH" -d "$OUTPUT_PATH/tmp"
+	    mv "$OUTPUT_PATH"/tmp/* "$OUTPUT_PATH/$BIN_PATH/"
+	else
+	    echo "Warning: Cannot find Linux VM!"
+	fi
+}
+
+function copy_mac_vm() {
+	# Only works for VM >= 90. If you need a VM < 90, you need to 
+	# udpate this method to use either the old or new VM URL format (see zeroconf).
+	set_arch_path
 	FILES_URL="http://files.pharo.org/get-files/${PHARO_VERSION_PATH}"
-	VM_URL="${FILES_URL}/pharo-vm-Darwin-${MAC_VM_ARCH}-stable.zip"
+	VM_URL="${FILES_URL}/pharo-vm-Darwin-${VM_ARCH_PATH}-stable.zip"
 	VM_TMP_PATH="$OUTPUT_PATH/tmp"
 	mkdir "$VM_TMP_PATH" && cd "$VM_TMP_PATH"
 	VM_ZIP="${VM_TMP_PATH}/vm.zip"
